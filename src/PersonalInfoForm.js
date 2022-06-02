@@ -10,6 +10,7 @@ const PersonalInfoForm = (props) => {
         props.setFirstName(firstName);
         props.setLastName(lastName);
         props.setAge(age);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[firstName, lastName, age]);
 
     return (
