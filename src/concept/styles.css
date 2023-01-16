@@ -1,0 +1,21 @@
+.container {
+    margin-left: 10%;
+    background-color: aliceblue;
+    padding: 20px;
+    box-shadow: 1px 1px 10px aliceblue;
+}
+.p-blue {
+    color: blue;
+}
+
+.p-red {
+    color: red;
+}
+
+.veg {
+    color: green;
+}
+
+.fruit {
+    color: red;
+}
