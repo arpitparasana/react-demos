@@ -1,11 +1,15 @@
 import { useEffect, useState } from "react";
 import { food } from "./DataRepo";
 
-export default function FoodNavigator() {
+export default function FoodNavigator(props) {
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [type, setType] = useState('0');
+    const [currentItemForCart, setCurrentItemForCart] = useState();
 
     useEffect(() => {
-        console.log('In useEffect(): index is ' + currentIndex);
+        setType(food[currentIndex].type);
+        setCurrentItemForCart(food[currentIndex]);
+        props.setCurrentItemForCart(food[currentIndex]);
     }, [currentIndex]);
 
     function handlePrevious() {
@@ -18,11 +22,15 @@ export default function FoodNavigator() {
 
     return (
         <>
-            <p>Navigate through items in the food list</p>
-            <button onClick={handlePrevious}>&lt;</button>&nbsp;&nbsp;
-            <button onClick={handleNext}>&gt;</button>
+            <p>Navigate through items in the list</p>
+            <button onClick={handlePrevious}><b>&lt;</b></button>&nbsp;&nbsp;
+            <button onClick={handleNext}><b>&gt;</b></button>&nbsp;&nbsp;
             <br />
-            {food[currentIndex].name}
+            <p className={type === '1' ? 'veg' : 'fruit'}>{food[currentIndex].name}</p>
+            {food[currentIndex].imgurl !== '' &&
+                <img src={food[currentIndex].imgurl} alt='Apple'
+                    height='100px' width='100px'></img>
+            }
         </>
     );
 }

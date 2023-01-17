@@ -1,3 +1,6 @@
+h1 {
+    color:crimson;
+}
 .container {
     margin-left: 10%;
     background-color: aliceblue;
@@ -5,17 +8,17 @@
     box-shadow: 1px 1px 10px aliceblue;
 }
 .p-blue {
-    color: blue;
+    color: darkslateblue;
 }
 
 .p-red {
-    color: red;
+    color: crimson;
 }
 
 .veg {
-    color: green;
+    color: darkolivegreen;
 }
 
 .fruit {
-    color: red;
+    color: crimson;
 }

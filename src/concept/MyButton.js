@@ -2,12 +2,9 @@ import { useState } from "react";
 
 export default function MyButton(props) {
 
-    function handleClick() {
-    }
-
     return (
         <>
-        <button className={props.styleClass} onClick={handleClick}>{props.label}</button>
+        <button className={props.styleClass} onClick={props.onClick}>{props.label}</button>
         </>
     );
 }
