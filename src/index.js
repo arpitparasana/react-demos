@@ -4,14 +4,15 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import MyApp from './concept/MyApp';
+import ReactTable from './concept/react_table/ReactTable';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <BrowserRouter>
     <Routes>
       <Route path='/' element={<MyApp />}></Route>
-    </Routes>
-    
+      <Route path="/reacttable" element={<ReactTable/>}/>
+    </Routes>    
   </BrowserRouter>
 );
 

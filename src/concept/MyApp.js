@@ -6,6 +6,7 @@ import FoodNavigator from "./FoodNavigator";
 import MyButton from "./MyButton";
 import PublicHome from "./PublicHome";
 import './styles.css';
+import { Link } from "react-router-dom";
 
 export default function MyApp() {
     const [loggedIn, setLoggedIn] = useState(false);
@@ -51,6 +52,9 @@ export default function MyApp() {
             {food.map((item) => {
                 return <li key={item.id} className={item.type === '1' ? 'veg' : 'fruit'}>{item.name}</li>
             })}
+            <hr />
+            <Link to='reacttable'>React table demo</Link>
         </div>
+        
     );
 }
