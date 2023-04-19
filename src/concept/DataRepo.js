@@ -16,3 +16,10 @@ export let food = [
     {name:'Carrots', type:'1', id:'6', imgurl:'https://i5.walmartimages.ca/images/Enlarge/094/417/6000200094417.jpg'},
     {name:'Peach', type:'2', id:'7', imgurl:'https://i5.walmartimages.ca/images/Enlarge/020/781/6000200020781.jpg'},
 ]
+
+export let countriesPopulation = [
+    {country: 'India',population: '1,407,563,842',area: '3,287,263 sqkm'},
+    {country: 'China',population: '1,425,893,465',area: '9,596,961 sqkm'},
+    {country: 'United States',population: '336,997,624',area: '9,629,091 sqkm'},
+    {country: 'Indonesia',population: '273,753,191',area: '1,910,931 sqkm'},
+]

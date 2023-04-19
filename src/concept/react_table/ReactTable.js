@@ -1,6 +1,7 @@
 import React from "react";
-import CoinFlip from "./coinflip";
+// import CoinFlip from "./coinflip";
 import { useTable } from "react-table";
+import { countriesPopulation } from "../DataRepo";
 
 function ReactTable(props) {
     
@@ -28,7 +29,7 @@ function ReactTable(props) {
                     </>
                 )}
             </CoinFlip> */}
-            <table {...getTableProps()} style={{ border: 'solid 1px blue' }}>
+            <table {...getTableProps()} style={{ border: 'solid 1px black' }}>
                 <thead>
                     {
                         headerGroups.map(headerGroup => (
@@ -37,7 +38,6 @@ function ReactTable(props) {
                                     headerGroup.headers.map(column => (
                                         <th {...column.getHeaderProps()}
                                         style={{
-                                            borderBottom: 'solid 3px red',
                                             background: 'aliceblue',
                                             color: 'black',
                                             fontWeight: 'bold',
@@ -64,8 +64,7 @@ function ReactTable(props) {
                                                 <td {...cell.getCellProps()} 
                                                 style={{
                                                     padding: '10px',
-                                                    border: 'solid 1px gray',
-                                                    background: 'papayawhip',
+                                                    border: 'solid 1px gray'
                                                   }}>
                                                     {
                                                         cell.render('Cell')
@@ -86,31 +85,22 @@ function ReactTable(props) {
 }
 
 const dataPrep = () => {
-    return [
-        {
-          col1: 'Hello',
-          col2: 'World',
-        },
-        {
-          col1: 'react-table',
-          col2: 'rocks',
-        },
-        {
-          col1: 'whatever',
-          col2: 'you want',
-        },
-      ]
+    return countriesPopulation;
 }
 
 const columnPrep = () => {
     return [
         {
-            Header: 'Column 1',
-            accessor: 'col1'
+            Header: 'Country',
+            accessor: 'country'
         },
         {
-            Header: 'Column 2',
-            accessor: 'col2'
+            Header: 'Population',
+            accessor: 'population'
+        },
+        {
+            Header: 'Area',
+            accessor: 'area'
         }
     ]
 }
