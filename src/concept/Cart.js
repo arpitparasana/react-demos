@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export default function Cart(props) {
     const [itemsInCart, setItemsInCart] = useState([]);
@@ -9,7 +9,6 @@ export default function Cart(props) {
             let added = false;
             itemsInCart.forEach(item => {
                 if (item.name === props.addItemToCart.name && added === false) {
-                    console.log('Adding ' + props.addItemToCart.name);
                     item.count = item.count + 1;
                     added = true;
                     setCartSize(cartSize + 1);
@@ -26,17 +25,24 @@ export default function Cart(props) {
     }, [props.addItemToCart])
 
     useEffect(() => {
-
+        
     }, [cartSize])
 
-
     return (
+        <React.StrictMode>
         <>
             <h5>Total Items in cart: {cartSize}</h5>
 
-            {itemsInCart.map((item) => {
-                return <li key={item.name}>{item.name} x  {item.count} </li>
+            {itemsInCart.map((item, i) => {
+                return (
+                    <div key={item.name}>
+                        {item.name} x  {item.count}
+                        &nbsp;<button> - </button>
+                        &nbsp;<button> + </button>
+                    </div>
+                );
             })} 
         </>
+        </React.StrictMode>
     );
 }

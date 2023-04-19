@@ -13,11 +13,11 @@ export default function FoodNavigator(props) {
     }, [currentIndex]);
 
     function handlePrevious() {
-        setCurrentIndex(currentIndex > 0 ? currentIndex - 1 : currentIndex);
+        setCurrentIndex(currentIndex > 0 ? currentIndex - 1 : food.length - 1);
     }
 
     function handleNext() {
-        setCurrentIndex(currentIndex < food.length - 1 ? currentIndex + 1 : currentIndex);
+        setCurrentIndex(currentIndex < food.length - 1 ? currentIndex + 1 : 0);
     }
 
     return (
