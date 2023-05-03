@@ -18,8 +18,8 @@ export let food = [
 ]
 
 export let countriesPopulation = [
-    {country: 'India',population: '1,407,563,842',area: '3,287,263 sqkm'},
-    {country: 'China',population: '1,425,893,465',area: '9,596,961 sqkm'},
-    {country: 'United States',population: '336,997,624',area: '9,629,091 sqkm'},
-    {country: 'Indonesia',population: '273,753,191',area: '1,910,931 sqkm'},
+    {id: 1, country: 'India',population: 1407563842,area: '3,287,263 sqkm', flag: "Y"},
+    {id: 2, country: 'China',population: 1425893465,area: '9,596,961 sqkm', flag: "N"},
+    {id: 3, country: 'United States',population: 336997624,area: '9,629,091 sqkm', flag: "Y"},
+    {id: 4, country: 'Indonesia',population: 273753191,area: '1,910,931 sqkm', flag: "N"},
 ]

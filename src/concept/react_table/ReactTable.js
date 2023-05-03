@@ -1,22 +1,95 @@
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
 // import CoinFlip from "./coinflip";
-import { useTable } from "react-table";
+import { useRowSelect, useTable } from "react-table";
 import { countriesPopulation } from "../DataRepo";
+import { Link } from "react-router-dom";
 
 function ReactTable(props) {
     
-    const data = React.useMemo(() => dataPrep(),[]);
-    const columns = React.useMemo(() => columnPrep(),[]);
-    const tableInstance = useTable({columns,data});
+    const [temp, setTemp] = useState(0);
+    const [arr, setArr] = useState([]);
+    const dataPrep = () => {
+        return countriesPopulation;
+    }
+    
+    const columnPrep = () => {
+        return [
+            {
+                Header: 'Country',
+                accessor: 'country'
+            },
+            {
+                id: 'population',
+                Header: 'Population',
+                accessor: row => {
+                    return row.population > 100 ? row.population : '< 100';
+                },
+            },
+            {
+                Header: 'Area',
+                accessor: 'area'
+            },
+            {
+                Header: 'Action',
+                Cell: ({row}) => {
+                    return <Link to={'/reacttable/'+row.original.country}>View More</Link>
+                }
+            },
+            {
+                Header: 'Flag',
+                accessor: 'flag'
+            }
+        ]
+    }
+    
+
+    const data = useMemo(dataPrep,[]);
+    const columns = useMemo(columnPrep,[]);
 
     const {
         getTableProps,
         getTableBodyProps,
         headerGroups,
         rows,
-        prepareRow
-    } = tableInstance;
+        prepareRow,
+        selectedFlatRows,
+    } = useTable(
+        {
+            columns,
+            data
+        },
+        useRowSelect,
+        hooks => {
+            hooks.visibleColumns.push(columns => [
+                {
+                    id: 'selection',
+                    Header: ({getToggleAllRowsSelectedProps}) => {
+                        <div>
+                            <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()}/>
+                        </div>
+                    },
+                    Cell: ({row}) => (
+                     <div>
+                        <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
+                     </div>   
+                    )
+                },
+                ...columns,
+            ])
+        });
 
+    useEffect(()=>{
+        const arr = [{name:'arpit'},{name: 'akruti'}];
+        setArr(arr);
+    },[])
+
+    const handleClick = e => {
+        setTemp(() => temp + 1);
+        console.log("Temp: " + temp);
+        //arr.map(a=>console.log(a.name));
+        console.log(arr);
+    }
+    
     return(
         <div className='container'>
             <h1>React table demo</h1>
@@ -29,6 +102,14 @@ function ReactTable(props) {
                     </>
                 )}
             </CoinFlip> */}
+            
+            Filter By Flag:  
+            <select>
+                <option value='Y'>Y</option>
+                <option value='N'>N</option>
+            </select>
+            <br />
+            <br />
             <table {...getTableProps()} style={{ border: 'solid 1px black' }}>
                 <thead>
                     {
@@ -41,6 +122,7 @@ function ReactTable(props) {
                                             background: 'aliceblue',
                                             color: 'black',
                                             fontWeight: 'bold',
+                                            border: 'solid 1px gray'
                                           }}>
                                             {
                                                 column.render('Header')
@@ -79,30 +161,33 @@ function ReactTable(props) {
                     }
                 </tbody>
             </table>
-
+            <br />
+            <br />
+         
+            Selected Rows: <br />
+            {selectedFlatRows.map(m=>{
+                return <p key={m.original.id}>{m.original.country} {m.original.population} {m.original.area}</p>
+            })}
+            
         </div>
     );
 }
 
-const dataPrep = () => {
-    return countriesPopulation;
-}
+const IndeterminateCheckbox = React.forwardRef(
+  ({ indeterminate, ...rest }, ref) => {
+    const defaultRef = React.useRef()
+    const resolvedRef = ref || defaultRef
 
-const columnPrep = () => {
-    return [
-        {
-            Header: 'Country',
-            accessor: 'country'
-        },
-        {
-            Header: 'Population',
-            accessor: 'population'
-        },
-        {
-            Header: 'Area',
-            accessor: 'area'
-        }
-    ]
-}
+    React.useEffect(() => {
+      resolvedRef.current.indeterminate = indeterminate
+    }, [resolvedRef, indeterminate])
+
+    return (
+      <>
+        <input type="checkbox" ref={resolvedRef} {...rest} />
+      </>
+    )
+  }
+)
 
 export default ReactTable;
