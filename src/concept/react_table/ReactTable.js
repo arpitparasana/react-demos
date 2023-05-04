@@ -15,6 +15,19 @@ function ReactTable(props) {
     const columnPrep = () => {
         return [
             {
+                id: 'selection',
+                Header: ({getToggleAllRowsSelectedProps}) => (
+                    <div>
+                        Select All <Checkbox {...getToggleAllRowsSelectedProps()}/>
+                    </div>
+                ),
+                Cell: ({row}) => (
+                 <div>
+                    <Checkbox {...row.getToggleRowSelectedProps()} />
+                 </div>   
+                )
+            },
+            {
                 Header: 'Country',
                 accessor: 'country'
             },
@@ -30,13 +43,7 @@ function ReactTable(props) {
                 accessor: 'area'
             },
             {
-                Header: 'Action',
-                Cell: ({row}) => {
-                    return <Link to={'/reacttable/'+row.original.country}>View More</Link>
-                }
-            },
-            {
-                Header: 'Flag',
+                Header: ()=>(<>Flag &nbsp;&nbsp;</>),
                 accessor: 'flag'
             }
         ]
@@ -58,25 +65,7 @@ function ReactTable(props) {
             columns,
             data
         },
-        useRowSelect,
-        hooks => {
-            hooks.visibleColumns.push(columns => [
-                {
-                    id: 'selection',
-                    Header: ({getToggleAllRowsSelectedProps}) => {
-                        <div>
-                            <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()}/>
-                        </div>
-                    },
-                    Cell: ({row}) => (
-                     <div>
-                        <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
-                     </div>   
-                    )
-                },
-                ...columns,
-            ])
-        });
+        useRowSelect);
 
     useEffect(()=>{
         const arr = [{name:'arpit'},{name: 'akruti'}];
@@ -173,7 +162,7 @@ function ReactTable(props) {
     );
 }
 
-const IndeterminateCheckbox = React.forwardRef(
+const Checkbox = React.forwardRef(
   ({ indeterminate, ...rest }, ref) => {
     const defaultRef = React.useRef()
     const resolvedRef = ref || defaultRef
@@ -184,6 +173,7 @@ const IndeterminateCheckbox = React.forwardRef(
 
     return (
       <>
+        {console.log(rest)}
         <input type="checkbox" ref={resolvedRef} {...rest} />
       </>
     )

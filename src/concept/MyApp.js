@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import AdminHome from "./AdminHome";
 import Cart from "./Cart";
 import { testExport, food } from "./DataRepo";
@@ -7,12 +7,16 @@ import MyButton from "./MyButton";
 import PublicHome from "./PublicHome";
 import './styles.css';
 import { Link } from "react-router-dom";
+import ContextDemo from "./ContextDemo";
+
+export const ThemeContext = createContext('Light');
 
 export default function MyApp() {
     const [loggedIn, setLoggedIn] = useState(false);
     const [loggedInCount, setLoggedInCount] = useState(0);
     const [currentItem, setCurrentItemForCart] = useState();
     const [addItemToCart, setAddItemToCart] = useState();
+    const [theme, setTheme] = useState('Dark');
 
     useEffect(() => {
         loggedIn && setLoggedInCount(loggedInCount + 1);
@@ -54,6 +58,14 @@ export default function MyApp() {
             })}
             <hr />
             <Link to='reacttable'>React table demo</Link>
+            <hr />
+            <ThemeContext.Provider value={theme}>
+                <ContextDemo />
+            </ThemeContext.Provider>
+            <br />
+            <button onClick={()=>{
+                setTheme(theme === 'Dark' ? 'Light' : 'Dark');
+            }}>Change Theme</button>
         </div>
         
     );
