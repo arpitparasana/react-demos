@@ -29,13 +29,21 @@ export default function MyApp() {
     function addToCart() {
         let item = {name:''}
         item.name = currentItem.name;
+        item.available = currentItem.available;
         setAddItemToCart(item);
     }
 
 
     return (
-        <div className='container'>
+        <div className='container'  style={theme === 'Dark' ? {backgroundColor: '#010107eb', color: 'white'}:{}}>
             <h1>Welcome to main concept page</h1>
+            <ThemeContext.Provider value={theme}>
+                <ContextDemo />
+            </ThemeContext.Provider>
+            <br />
+            <button onClick={()=>{
+                setTheme(theme === 'Dark' ? 'Light' : 'Dark');
+            }}>Change Theme</button>
             <hr />
             <FoodNavigator currentItemForCart={currentItem} setCurrentItemForCart={setCurrentItemForCart} /> <br />
             <button onClick={addToCart}>Add to cart</button><br />
@@ -59,13 +67,6 @@ export default function MyApp() {
             <hr />
             <Link to='reacttable'>React table demo</Link>
             <hr />
-            <ThemeContext.Provider value={theme}>
-                <ContextDemo />
-            </ThemeContext.Provider>
-            <br />
-            <button onClick={()=>{
-                setTheme(theme === 'Dark' ? 'Light' : 'Dark');
-            }}>Change Theme</button>
         </div>
         
     );

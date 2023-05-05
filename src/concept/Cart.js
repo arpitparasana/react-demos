@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 export default function Cart(props) {
     const [itemsInCart, setItemsInCart] = useState([]);
-    const [cartSize, setCartSize] = useState(0);
+    let cartSize = itemsInCart.length;
 
     useEffect(() => {
         if (props.addItemToCart !== undefined) {
@@ -11,22 +11,32 @@ export default function Cart(props) {
                 if (item.name === props.addItemToCart.name && added === false) {
                     item.count = item.count + 1;
                     added = true;
-                    setCartSize(cartSize + 1);
                 }
             });
             if (added === false) {
-                itemsInCart.push({ name: props.addItemToCart.name, count: 1 })
-                setCartSize(cartSize + 1);
+                itemsInCart.push({ name: props.addItemToCart.name, count: 1, available: props.addItemToCart.available })
             }
         }
         setItemsInCart(itemsInCart);
-
-        console.log(itemsInCart);
     }, [props.addItemToCart])
 
-    useEffect(() => {
-        
-    }, [cartSize])
+    function handleAddRemoveItem(item, action) {
+        let nextItemSet = itemsInCart.map((f)=>{
+            if(f.name === item.name) {
+                if(action === '-' &&  f.count > 0){
+                    return {...f, count: f.count - 1}
+                } else if(action === '+' && f.count < f.available) {
+                    return {...f, count: f.count + 1}
+                } else {
+                    return f;
+                }
+            } else {
+                return f;
+            }
+        })
+        nextItemSet = nextItemSet.filter(i => i.count > 0);
+        setItemsInCart(nextItemSet);
+    }
 
     return (
         <React.StrictMode>
@@ -34,11 +44,11 @@ export default function Cart(props) {
             <h5>Total Items in cart: {cartSize}</h5>
 
             {itemsInCart.map((item, i) => {
-                return (
-                    <div key={item.name}>
-                        {item.name} x  {item.count}
-                        &nbsp;<button> - </button>
-                        &nbsp;<button> + </button>
+                return(  
+                     <div key={item.name}>
+                        <button onClick={()=>handleAddRemoveItem(item,'-')}> - </button>
+                        &nbsp;<button onClick={()=>handleAddRemoveItem(item,'+')}> + </button>
+                        &nbsp;{item.name} x  {item.count}
                     </div>
                 );
             })} 

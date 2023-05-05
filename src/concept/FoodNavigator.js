@@ -26,7 +26,7 @@ export default function FoodNavigator(props) {
             <button onClick={handlePrevious}><b>&lt;</b></button>&nbsp;&nbsp;
             <button onClick={handleNext}><b>&gt;</b></button>&nbsp;&nbsp;
             <br />
-            <p className={type === '1' ? 'veg' : 'fruit'}>{food[currentIndex].name}</p>
+            <p className={type === '1' ? 'veg' : 'fruit'}>{food[currentIndex].name} available: {food[currentIndex].available}</p>
             {food[currentIndex].imgurl !== '' &&
                 <img src={food[currentIndex].imgurl} alt='Apple'
                     height='100px' width='100px'></img>
