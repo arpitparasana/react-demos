@@ -1,13 +1,9 @@
-import React, { useEffect, useMemo, useState } from "react";
-// import CoinFlip from "./coinflip";
-import { useRowSelect, useTable } from "react-table";
+import React, {useMemo } from "react";
+import { useRowSelect, useSortBy, useTable } from "react-table";
 import { countriesPopulation } from "../DataRepo";
-import { Link } from "react-router-dom";
 
 function ReactTable(props) {
     
-    const [temp, setTemp] = useState(0);
-    const [arr, setArr] = useState([]);
     const dataPrep = () => {
         return countriesPopulation;
     }
@@ -25,11 +21,15 @@ function ReactTable(props) {
                  <div>
                     <Checkbox {...row.getToggleRowSelectedProps()} />
                  </div>   
-                )
+                ),
+                disableSortBy: true
             },
             {
                 Header: 'Country',
-                accessor: 'country'
+                accessor: 'country',
+                sortType: (prev, curr, columnId) => {
+                    return sortItems(prev, curr, columnId)
+                }
             },
             {
                 id: 'population',
@@ -44,7 +44,8 @@ function ReactTable(props) {
             },
             {
                 Header: ()=>(<>Flag &nbsp;&nbsp;</>),
-                accessor: 'flag'
+                accessor: 'flag',
+                disableSortBy: true
             }
         ]
     }
@@ -65,40 +66,22 @@ function ReactTable(props) {
             columns,
             data
         },
+        useSortBy,
         useRowSelect);
 
-    useEffect(()=>{
-        const arr = [{name:'arpit'},{name: 'akruti'}];
-        setArr(arr);
-    },[])
-
-    const handleClick = e => {
-        setTemp(() => temp + 1);
-        console.log("Temp: " + temp);
-        //arr.map(a=>console.log(a.name));
-        console.log(arr);
-    }
+    const sortItems = (prev, curr, columnId) => {
+        if (prev.original[columnId].toLowerCase() > curr.original[columnId].toLowerCase()) {
+            return 1;
+        } else if (prev.original[columnId].toLowerCase() < curr.original[columnId].toLowerCase()) {
+            return -1;
+        } else {
+            return 0;
+        }
+    };
     
     return(
         <div className='container'>
             <h1>React table demo</h1>
-            {/* <p>Headless component demo using CoinFlip as an example</p>
-            <CoinFlip>
-                {({ flip, isHeads }) => (
-                    <>
-                        <button onClick={flip}>Flip</button><br/>
-                        {isHeads ? (<>Heads</>):(<>Tails</>)}
-                    </>
-                )}
-            </CoinFlip> */}
-            
-            Filter By Flag:  
-            <select>
-                <option value='Y'>Y</option>
-                <option value='N'>N</option>
-            </select>
-            <br />
-            <br />
             <table {...getTableProps()} style={{ border: 'solid 1px black' }}>
                 <thead>
                     {
@@ -106,7 +89,7 @@ function ReactTable(props) {
                             <tr {...headerGroup.getHeaderGroupProps()}>
                                 {
                                     headerGroup.headers.map(column => (
-                                        <th {...column.getHeaderProps()}
+                                        <th {...column.getHeaderProps(column.getSortByToggleProps())}
                                         style={{
                                             background: 'aliceblue',
                                             color: 'black',
@@ -116,6 +99,14 @@ function ReactTable(props) {
                                             {
                                                 column.render('Header')
                                             }
+                                            <span>
+                                                {column.isSorted
+                                                ? column.isSortedDesc
+                                                    ? ' 🔽'
+                                                    : ' 🔼'
+                                                : column.canSort ? '🔽🔼' : ''}
+
+                                            </span>
                                         </th>
                                     ))
                                 }

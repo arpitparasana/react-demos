@@ -22,4 +22,5 @@ export let countriesPopulation = [
     {id: 2, country: 'China',population: 1425893465,area: '9,596,961 sqkm', flag: "N"},
     {id: 3, country: 'United States',population: 336997624,area: '9,629,091 sqkm', flag: "Y"},
     {id: 4, country: 'Indonesia',population: 273753191,area: '1,910,931 sqkm', flag: "N"},
+    {id: 5, country: 'india',population: 1407563842,area: '3,287,263 sqkm', flag: "Y"},
 ]

@@ -16,7 +16,7 @@ export default function MyApp() {
     const [loggedInCount, setLoggedInCount] = useState(0);
     const [currentItem, setCurrentItemForCart] = useState();
     const [addItemToCart, setAddItemToCart] = useState();
-    const [theme, setTheme] = useState('Dark');
+    const [theme, setTheme] = useState('Light');
 
     useEffect(() => {
         loggedIn && setLoggedInCount(loggedInCount + 1);
@@ -36,7 +36,9 @@ export default function MyApp() {
 
     return (
         <div className='container'  style={theme === 'Dark' ? {backgroundColor: '#010107eb', color: 'white'}:{}}>
-            <h1>Welcome to main concept page</h1>
+            <h1>React random demos</h1>
+            <Link to='reacttable'>React table demo</Link>
+            <hr />
             <ThemeContext.Provider value={theme}>
                 <ContextDemo />
             </ThemeContext.Provider>
@@ -64,8 +66,6 @@ export default function MyApp() {
             {food.map((item) => {
                 return <li key={item.id} className={item.type === '1' ? 'veg' : 'fruit'}>{item.name}</li>
             })}
-            <hr />
-            <Link to='reacttable'>React table demo</Link>
             <hr />
         </div>
         
