@@ -22,3 +22,22 @@ h1 {
 .fruit {
     color: crimson;
 }
+
+.table th {
+    position: relative;
+    border-right: solid 1px gray;
+}
+
+td {
+    border-right: solid 1px gray;
+}
+.resizer {
+    /* Displayed at the right side of column */
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 5px;
+    cursor: col-resize;
+    -webkit-user-select: none;
+    user-select: none;
+}

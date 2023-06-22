@@ -1,26 +1,28 @@
-import React, {useMemo } from "react";
-import { useRowSelect, useSortBy, useTable } from "react-table";
+import React, { useMemo } from "react";
+import { useResizeColumns, useRowSelect, useSortBy, useTable } from "react-table";
 import { countriesPopulation } from "../DataRepo";
+import './../styles.css';
+import { useEffect } from "react";
 
 function ReactTable(props) {
-    
+
     const dataPrep = () => {
         return countriesPopulation;
     }
-    
+
     const columnPrep = () => {
         return [
             {
                 id: 'selection',
-                Header: ({getToggleAllRowsSelectedProps}) => (
+                Header: ({ getToggleAllRowsSelectedProps }) => (
                     <div>
-                        Select All <Checkbox {...getToggleAllRowsSelectedProps()}/>
+                        Select All <Checkbox {...getToggleAllRowsSelectedProps()} />
                     </div>
                 ),
-                Cell: ({row}) => (
-                 <div>
-                    <Checkbox {...row.getToggleRowSelectedProps()} />
-                 </div>   
+                Cell: ({ row }) => (
+                    <div>
+                        <Checkbox {...row.getToggleRowSelectedProps()} />
+                    </div>
                 ),
                 disableSortBy: true
             },
@@ -43,16 +45,25 @@ function ReactTable(props) {
                 accessor: 'area'
             },
             {
-                Header: ()=>(<>Flag &nbsp;&nbsp;</>),
+                Header: () => (<>Flag &nbsp;&nbsp;</>),
                 accessor: 'flag',
                 disableSortBy: true
             }
         ]
     }
-    
 
-    const data = useMemo(dataPrep,[]);
-    const columns = useMemo(columnPrep,[]);
+
+    const data = useMemo(dataPrep, []);
+    const columns = useMemo(columnPrep, []);
+    const defaultColumn = React.useMemo(
+        () => ({
+            minWidth: 30,
+            width: 150,
+            maxWidth: 400
+        }),
+        []
+    );
+
 
     const {
         getTableProps,
@@ -64,10 +75,14 @@ function ReactTable(props) {
     } = useTable(
         {
             columns,
-            data
+            data,
+            defaultColumn
         },
         useSortBy,
-        useRowSelect);
+        useRowSelect,
+        useResizeColumns
+    );
+    console.log(headerGroups[0].headers[0].getResizerProps());
 
     const sortItems = (prev, curr, columnId) => {
         if (prev.original[columnId].toLowerCase() > curr.original[columnId].toLowerCase()) {
@@ -78,33 +93,71 @@ function ReactTable(props) {
             return 0;
         }
     };
-    
-    return(
+
+    useEffect(() => {
+        const table = document.getElementById('resizeMe');
+        const cols = table.querySelectorAll('th');
+        [].forEach.call(cols, function (col) {
+            const resizer = document.createElement('div');
+            resizer.classList.add('resizer');
+            resizer.style.height = `${table.offsetHeight}px`;
+            col.appendChild(resizer);
+            createResizableColumn(col, resizer);
+        });
+    }, []);
+
+    const createResizableColumn = function (col, resizer) {
+        let x = 0;
+        let w = 0;
+        const mouseDownHandler = function (e) {
+            x = e.clientX;
+            const styles = window.getComputedStyle(col);
+            w = parseInt(styles.width, 10);
+            document.addEventListener('mousemove', mouseMoveHandler);
+            document.addEventListener('mouseup', mouseUpHandler);
+
+        };
+        const mouseMoveHandler = function (e) {
+            const dx = e.clientX - x;
+            col.style.width = `${w + dx}px`;
+        };
+        const mouseUpHandler = function () {
+            document.removeEventListener('mousemove', mouseMoveHandler);
+            document.removeEventListener('mouseup', mouseUpHandler);
+        };
+
+        resizer.addEventListener('mousedown', mouseDownHandler);
+    };
+
+    return (
         <div className='container'>
             <h1>React table demo</h1>
-            <table {...getTableProps()} style={{ border: 'solid 1px black' }}>
+            <table {...getTableProps()} style={{ border: 'solid 1px black' }} id="resizeMe" className="table">
                 <thead>
                     {
                         headerGroups.map(headerGroup => (
                             <tr {...headerGroup.getHeaderGroupProps()}>
                                 {
                                     headerGroup.headers.map(column => (
-                                        <th {...column.getHeaderProps(column.getSortByToggleProps())}
-                                        style={{
-                                            background: 'aliceblue',
-                                            color: 'black',
-                                            fontWeight: 'bold',
-                                            border: 'solid 1px gray'
-                                          }}>
+                                        <th
+                                            {...column.getHeaderProps(column.getSortByToggleProps())}
+
+                                            style={{
+                                                background: 'aliceblue',
+                                                color: 'black',
+                                                fontWeight: 'bold',
+                                                border: 'solid 1px gray',
+                                            }}
+                                        >
                                             {
                                                 column.render('Header')
                                             }
                                             <span>
                                                 {column.isSorted
-                                                ? column.isSortedDesc
-                                                    ? ' 🔽'
-                                                    : ' 🔼'
-                                                : column.canSort ? '🔽🔼' : ''}
+                                                    ? column.isSortedDesc
+                                                        ? ' 🔽'
+                                                        : ' 🔼'
+                                                    : column.canSort ? '🔽🔼' : ''}
 
                                             </span>
                                         </th>
@@ -123,11 +176,11 @@ function ReactTable(props) {
                                     {
                                         row.cells.map(cell => {
                                             return (
-                                                <td {...cell.getCellProps()} 
-                                                style={{
-                                                    padding: '10px',
-                                                    border: 'solid 1px gray'
-                                                  }}>
+                                                <td {...cell.getCellProps()}
+                                                    style={{
+                                                        padding: '10px',
+                                                        border: 'solid 1px gray'
+                                                    }}>
                                                     {
                                                         cell.render('Cell')
                                                     }
@@ -141,34 +194,34 @@ function ReactTable(props) {
                     }
                 </tbody>
             </table>
+
+
             <br />
             <br />
-         
+
             Selected Rows: <br />
-            {selectedFlatRows.map(m=>{
+            {selectedFlatRows.map(m => {
                 return <p key={m.original.id}>{m.original.country} {m.original.population} {m.original.area}</p>
             })}
-            
         </div>
     );
 }
 
 const Checkbox = React.forwardRef(
-  ({ indeterminate, ...rest }, ref) => {
-    const defaultRef = React.useRef()
-    const resolvedRef = ref || defaultRef
+    ({ indeterminate, ...rest }, ref) => {
+        const defaultRef = React.useRef()
+        const resolvedRef = ref || defaultRef
 
-    React.useEffect(() => {
-      resolvedRef.current.indeterminate = indeterminate
-    }, [resolvedRef, indeterminate])
+        React.useEffect(() => {
+            resolvedRef.current.indeterminate = indeterminate
+        }, [resolvedRef, indeterminate])
 
-    return (
-      <>
-        {console.log(rest)}
-        <input type="checkbox" ref={resolvedRef} {...rest} />
-      </>
-    )
-  }
+        return (
+            <>
+                <input type="checkbox" ref={resolvedRef} {...rest} />
+            </>
+        )
+    }
 )
 
 export default ReactTable;
