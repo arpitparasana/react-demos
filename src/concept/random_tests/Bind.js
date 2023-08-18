@@ -1,10 +1,14 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 export default function Bind(props) {
 
     const [year, setYear] = useState(2023);
     const [value, setValue] = useState(1);
-    let render = true;
+
+    useEffect(() => {
+        setYear(1990);
+    },[]);
+
     const incrementValue = (e) => {
         let newValue = value + 1;
         setValue(newValue);
@@ -19,7 +23,9 @@ export default function Bind(props) {
         alert("Current Year: " + year + ", Current Value: " + value);
     }
 
-    const data = useMemo(() => {return <button id="memoButton" onClick={(e)=>handleClick(e)}>Test value</button>});
+    // adding dependency array stops updating handleClick bound values unless those values are specified in the array (year and value here)
+    // removing dependency array interestingly works, does react update all values by defaule if dependency array is not specified?
+    const data = useMemo(() => {return <button id="memoButton" onClick={(e)=>handleClick(e)}>Test value from useMemo data</button>},[year, value]);
 
     return(
     <>
