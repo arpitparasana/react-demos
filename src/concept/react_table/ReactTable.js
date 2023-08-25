@@ -16,12 +16,12 @@ function ReactTable(props) {
                 id: 'selection',
                 Header: ({ getToggleAllRowsSelectedProps }) => (
                     <div>
-                        Select All <Checkbox {...getToggleAllRowsSelectedProps()} />
+                        Select All <input type='checkbox' {...getToggleAllRowsSelectedProps()} />
                     </div>
                 ),
                 Cell: ({ row }) => (
                     <div>
-                        <Checkbox {...row.getToggleRowSelectedProps()} />
+                        <input type='checkbox' {...row.getToggleRowSelectedProps()} />
                     </div>
                 ),
                 disableSortBy: true
@@ -207,21 +207,24 @@ function ReactTable(props) {
     );
 }
 
-const Checkbox = React.forwardRef(
-    ({ indeterminate, ...rest }, ref) => {
-        const defaultRef = React.useRef()
-        const resolvedRef = ref || defaultRef
+// Do not overuse refs. You should only use refs for imperative behaviors that you can’t express as props: 
+// for example, scrolling to a node, focusing a node, triggering an animation, selecting text, and so on
 
-        React.useEffect(() => {
-            resolvedRef.current.indeterminate = indeterminate
-        }, [resolvedRef, indeterminate])
+// const Checkbox = React.forwardRef(
+//     ({ indeterminate, ...rest }, ref) => {
+//         const defaultRef = React.useRef()
+//         const resolvedRef = ref || defaultRef
 
-        return (
-            <>
-                <input type="checkbox" ref={resolvedRef} {...rest} />
-            </>
-        )
-    }
-)
+//         React.useEffect(() => {
+//             resolvedRef.current.indeterminate = indeterminate
+//         }, [resolvedRef, indeterminate])
+
+//         return (
+//             <>
+//                 <input type="checkbox" ref={resolvedRef} {...rest} />
+//             </>
+//         )
+//     }
+// )
 
 export default ReactTable;
