@@ -3,6 +3,7 @@ import { useResizeColumns, useRowSelect, useSortBy, useTable } from "react-table
 import { countriesPopulation } from "../DataRepo";
 import './../styles.css';
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 
 function ReactTable(props) {
 
@@ -131,6 +132,7 @@ function ReactTable(props) {
 
     return (
         <div className='container'>
+            <Link to='/'>Back to Main Page</Link>
             <h1>React table demo</h1>
             <table {...getTableProps()} style={{ border: 'solid 1px black' }} id="resizeMe" className="table">
                 <thead>

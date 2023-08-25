@@ -6,6 +6,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import MyApp from './concept/MyApp';
 import ReactTable from './concept/react_table/ReactTable';
 import Bind from './concept/random_tests/Bind';
+import DemoForm from './concept/forwardref/DemoForm';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -14,6 +15,7 @@ root.render(
       <Route path='/' element={<MyApp />}></Route>
       <Route path="/reacttable" element={<ReactTable/>}/>
       <Route path="/binding" element={<Bind/>}/>
+      <Route path="/forwardRefDemo" element={<DemoForm/>}/>
     </Routes>    
   </BrowserRouter>
 );

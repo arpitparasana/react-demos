@@ -38,7 +38,8 @@ export default function MyApp() {
         <div className='container'  style={theme === 'Dark' ? {backgroundColor: '#010107eb', color: 'white'}:{}}>
             <h1>React random demos</h1>
             <Link to='reacttable'>React table demo</Link><br />
-            <Link to='binding'>Binding Variable to functions Demo</Link>
+            <Link to='binding'>Binding Variable to functions Demo</Link><br />
+            <Link to='forwardRefDemo'>forwardRef Demo</Link>
             <hr />
             <ThemeContext.Provider value={theme}>
                 <ContextDemo />

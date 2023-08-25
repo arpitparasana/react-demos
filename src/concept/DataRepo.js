@@ -24,3 +24,8 @@ export let countriesPopulation = [
     {id: 4, country: 'Indonesia',population: 273753191,area: '1,910,931 sqkm', flag: "N"},
     {id: 5, country: 'india',population: 1407563842,area: '3,287,263 sqkm', flag: "Y"},
 ]
+
+export let forwardRefCaveat = {
+    text:'Do not overuse refs. You should only use refs for imperative behaviors that you can’t express as props: for example, scrolling to a node, focusing a node, triggering an animation, selecting text, and so on',
+    ref:'https://react.dev/reference/react/forwardRef'
+}
