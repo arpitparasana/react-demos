@@ -15,9 +15,11 @@ function ReactTable(props) {
         return [
             {
                 id: 'selection',
-                Header: ({ getToggleAllPageRowsSelectedProps }) => (
+                Header: ({ getToggleAllPageRowsSelectedProps, getToggleAllRowsSelectedProps }) => (
                     <div>
-                        Select All <Checkbox id="selectAll" {...getToggleAllPageRowsSelectedProps()} />
+                        Select <br/> 
+                        Page <Checkbox id="selectPage" {...getToggleAllPageRowsSelectedProps()} />&nbsp;&nbsp;&nbsp;
+                        All <Checkbox id="selectAll" {...getToggleAllRowsSelectedProps()} />
                     </div>
                 ),
                 Cell: ({ row }) => (
@@ -53,7 +55,6 @@ function ReactTable(props) {
         ]
     }
 
-
     const data = useMemo(dataPrep, []);
     const columns = useMemo(columnPrep, []);
     const defaultColumn = React.useMemo(
@@ -65,7 +66,6 @@ function ReactTable(props) {
         []
     );
 
-
     const {
         getTableProps,
         getTableBodyProps,
@@ -73,12 +73,13 @@ function ReactTable(props) {
         page,
         prepareRow,
         state: {pageIndex, pageSize, sortBy},
+        isAllRowsSelected,
         previousPage,
         nextPage,
         canPreviousPage,
         canNextPage,
         selectedFlatRows,
-        toggleAllRowsSelected
+        toggleAllRowsSelected,
     } = useTable(
         {
             columns,
@@ -103,9 +104,14 @@ function ReactTable(props) {
         }
     };
 
-    useEffect(() => {
-        toggleAllRowsSelected(false);
-    },[pageIndex, sortBy]);
+    // useEffect(() => {
+    //     // conditionally call this only if selectAll is not selected
+    //     if(!isAllRowsSelected) {
+    //         toggleAllRowsSelected(false);
+    //     }
+    // },[pageIndex, sortBy]);
+
+
 
     useEffect(() => {
         const table = document.getElementById('resizeMe');
@@ -241,11 +247,11 @@ const Checkbox = React.forwardRef(
     ({ indeterminate, ...rest }, ref) => {
         const defaultRef = React.useRef()
         const resolvedRef = ref || defaultRef
-
+        
         React.useEffect(() => {
             resolvedRef.current.indeterminate = indeterminate
         }, [resolvedRef, indeterminate])
-
+        
         return (
             <>
                 <input type="checkbox" ref={resolvedRef} {...rest} />
@@ -253,5 +259,6 @@ const Checkbox = React.forwardRef(
         )
     }
 )
+
 
 export default ReactTable;
